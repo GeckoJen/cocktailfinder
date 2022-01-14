@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+
+.App {
+  text-align: center;
+  font-family: 'Lobster', cursive;
+  background-image: linear-gradient( rgb(245, 245, 102), rgb(255, 87, 87));
+  min-height: 100vh;
+}
+
+#defaultImage {
+width: 50%;
+margin: 1em;
+}
+
+h1 {
+  margin-block-start: 0;
+  padding-top: 1em;
+  font-size: 3em;
+}
+
+button, input {
+    font-family: 'Lobster', cursive;
+    font-size: 1.3em;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+button {
+  background-color: rgb(255, 123, 0);
+}
+
+

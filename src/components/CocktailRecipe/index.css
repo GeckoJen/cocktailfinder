@@ -1,0 +1,18 @@
+h2 {
+    font-size: 2.5em;
+     /* font-family: Cairo, Verdana, Geneva, Tahoma, sans-serif */
+}
+
+table {
+    font-size: 1.3em;
+    margin: 0 auto;
+     font-family: Cairo, Verdana, Geneva, Tahoma, sans-serif
+}
+
+
+#recipeInstructions {
+    width: 50%;
+    margin: 1em auto;
+    font-size: 1.3em;
+    font-family: Cairo, Verdana, Geneva, Tahoma, sans-serif
+}
