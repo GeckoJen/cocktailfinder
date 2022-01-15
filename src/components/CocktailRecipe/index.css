@@ -16,3 +16,8 @@ table {
     font-size: 1.3em;
     font-family: Cairo, Verdana, Geneva, Tahoma, sans-serif
 }
+
+#backButton {
+    display: block;
+    margin: 1em auto 0;
+}

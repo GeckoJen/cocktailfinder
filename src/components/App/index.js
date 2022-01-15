@@ -5,7 +5,6 @@ import SearchByIngredient from "../SearchByIngredient";
 import CocktailSection from "../CocktailSection";
 import CocktailRecipe from "../CocktailRecipe";
 
-
 function App() {
   const [nameInput, setNameInput] = useState("");
   const [ingredientInput, setIngredientInput] = useState("");
@@ -15,10 +14,7 @@ function App() {
   const [cocktailRecipeSelected, setCocktailRecipeSelected] = useState(false);
   const [chosenCocktail, setChosenCocktail] = useState({});
   const [cocktailID, setCocktailID] = useState(0);
-
-//click on picture to fetch recipe for that cocktail - handleClick changes cocktailRecipeSelected
-//useEffect to fetch cocktail and set chosenCocktail
-
+  const [errorMessage, setErrorMessage] = useState(false);
 
   function handleNameInput(text) {
     setNameInput(text);
@@ -39,6 +35,11 @@ function App() {
       setNameInput("");
       setCocktails(data.drinks);
       setCocktailRecipeSelected(false);
+      if (!data.drinks) {
+        setErrorMessage(true);
+      } else {
+        setErrorMessage(false);
+      }
     }
     if (nameInput) {
       fetchData();
@@ -56,11 +57,21 @@ function App() {
       let url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredientInput}`;
       console.log(url);
       let response = await fetch(url);
-      let data = await response.json();
-      console.log(data);
-      setIngredientInput("");
-      setCocktails(data.drinks);
-      setCocktailRecipeSelected(false);
+      let data;
+      try {
+        data = await response.json();
+      } catch (err) {
+        console.log(err);
+        setErrorMessage(true);
+      } finally {
+        console.log(data);
+        setIngredientInput("");
+        if (data) {
+          setCocktails(data.drinks);
+          setCocktailRecipeSelected(false);
+          setErrorMessage(false);
+        }
+      }
     }
     if (ingredientInput) {
       fetchData();
@@ -73,8 +84,8 @@ function App() {
   }
 
   function selectRecipe(id) {
-    setCocktailRecipeSelected(true)
-    setCocktailID(id)
+    setCocktailRecipeSelected(true);
+    setCocktailID(id);
   }
 
   useEffect(() => {
@@ -87,15 +98,12 @@ function App() {
       console.log(data);
       setChosenCocktail(data.drinks[0]);
     }
-  if(cocktailID)
-      fetchData();
-  
-  }, [cocktailRecipeSelected]
-  )
+    if (cocktailID) fetchData();
+  }, [cocktailRecipeSelected]);
 
-useEffect(() => {
-  window.scrollTo(0, 0);
-}, [cocktailID]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [cocktailID]);
 
   return (
     <div className="App">
@@ -110,7 +118,14 @@ useEffect(() => {
         handleInput={handleIngredientInput}
         searchByIngredientFunction={searchByIngredientFunction}
       />
-      {cocktails && !cocktailRecipeSelected && <CocktailSection cocktails={cocktails} handleClick={selectRecipe}/>}
+      {errorMessage && (
+        <h3>
+          No results found. Please check your spelling or try another search.
+        </h3>
+      )}
+      {cocktails && !cocktailRecipeSelected && (
+        <CocktailSection cocktails={cocktails} handleClick={selectRecipe} />
+      )}
       {!cocktails && (
         <img
           id="defaultImage"
@@ -118,7 +133,14 @@ useEffect(() => {
           alt="display of cocktails"
         />
       )}
-      {cocktailRecipeSelected && <CocktailRecipe cocktail={chosenCocktail}/>}
+      {cocktailRecipeSelected && (
+        <CocktailRecipe
+          cocktail={chosenCocktail}
+          backToSearchResults={() => {
+            setCocktailRecipeSelected(false);
+          }}
+        />
+      )}
     </div>
   );
 }

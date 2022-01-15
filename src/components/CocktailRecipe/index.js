@@ -2,7 +2,7 @@ import React from "react";
 import "./index.css";
 import { v4 as uuidv4 } from "uuid";
 
-function CocktailRecipe({ cocktail }) {
+function CocktailRecipe({ cocktail, backToSearchResults }) {
   const cocktailIngredients = Object.entries(cocktail).filter(
     ([key, value]) => key.includes("strIngredient") && value
   );
@@ -60,6 +60,7 @@ function CocktailRecipe({ cocktail }) {
       </table>
       <p id="recipeInstructions">{cocktail.strInstructions}</p>
       <img src={cocktail.strDrinkThumb} alt={cocktail.strDrink} />
+      <button id="backButton" onClick={backToSearchResults}>Back to search results</button>
     </div>
   );
 }
